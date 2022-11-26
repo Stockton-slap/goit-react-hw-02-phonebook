@@ -1,5 +1,7 @@
 import { Component } from 'react';
 
+import PropTypes from 'prop-types';
+
 class ContactName extends Component {
   render() {
     const { name, number, onChange } = this.props;
@@ -34,5 +36,11 @@ class ContactName extends Component {
     );
   }
 }
+
+ContactName.propTypes = {
+  name: PropTypes.string.isRequired,
+  number: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
+};
 
 export default ContactName;

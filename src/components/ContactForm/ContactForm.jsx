@@ -1,6 +1,8 @@
 import { Component } from 'react';
 
-import ContactName from '../ContactName/ContactName';
+import PropTypes from 'prop-types';
+
+import ContactName from '../ContactName';
 
 class ContactForm extends Component {
   state = {
@@ -11,9 +13,17 @@ class ContactForm extends Component {
   handleSubmit = e => {
     e.preventDefault();
 
+    const { contacts, onSubmit } = this.props;
+
     const { name, number } = this.state;
 
-    this.props.onSubmit(name, number);
+    const contactNames = contacts.map(contact => contact.name);
+
+    if (contactNames.includes(name)) {
+      alert(`${name} is already in contacts.`);
+    } else {
+      onSubmit(name, number);
+    }
 
     this.reset();
   };
@@ -39,5 +49,16 @@ class ContactForm extends Component {
     );
   }
 }
+
+ContactForm.propTypes = {
+  onSubmit: PropTypes.func.isRequired,
+  contacts: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+      number: PropTypes.string.isRequired,
+    })
+  ),
+};
 
 export default ContactForm;
