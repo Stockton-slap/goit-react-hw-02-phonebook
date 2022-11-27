@@ -2,15 +2,22 @@ import { Component } from 'react';
 
 import PropTypes from 'prop-types';
 
+import {
+  ContactInfo,
+  ContactInfoLabel,
+  ContactInfoValues,
+} from './ContactName.styled';
+
 class ContactName extends Component {
   render() {
-    const { name, number, onChange } = this.props;
+    const { name, number, onChange, children } = this.props;
 
     return (
-      <div>
-        <label>
+      <ContactInfo>
+        <ContactInfoLabel>
           Name
-          <input
+          <br />
+          <ContactInfoValues
             type="text"
             name="name"
             value={name}
@@ -19,10 +26,12 @@ class ContactName extends Component {
             required
             onChange={onChange}
           />
-        </label>
-        <label>
+        </ContactInfoLabel>
+        <br />
+        <ContactInfoLabel>
           Number
-          <input
+          <br />
+          <ContactInfoValues
             type="tel"
             name="number"
             value={number}
@@ -31,8 +40,10 @@ class ContactName extends Component {
             required
             onChange={onChange}
           />
-        </label>
-      </div>
+        </ContactInfoLabel>
+        <br />
+        {children}
+      </ContactInfo>
     );
   }
 }

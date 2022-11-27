@@ -4,10 +4,13 @@ import PropTypes from 'prop-types';
 
 import ContactName from '../ContactName';
 
+import { AddContactBtn } from './ContactForm.styled';
+
 class ContactForm extends Component {
   state = {
     name: '',
     number: '',
+    isPressed: false,
   };
 
   handleSubmit = e => {
@@ -25,13 +28,15 @@ class ContactForm extends Component {
       onSubmit(name, number);
     }
 
+    this.setState({ isPressed: true });
+
     this.reset();
   };
 
   handleChange = e => {
     const { value, name } = e.target;
 
-    this.setState({ [name]: value });
+    this.setState({ [name]: value, isPressed: false });
   };
 
   reset = () => {
@@ -39,12 +44,15 @@ class ContactForm extends Component {
   };
 
   render() {
-    const { name, number } = this.state;
+    const { name, number, isPressed } = this.state;
 
     return (
       <form onSubmit={this.handleSubmit}>
-        <ContactName name={name} number={number} onChange={this.handleChange} />
-        <button type="submit">Add contact</button>
+        <ContactName name={name} number={number} onChange={this.handleChange}>
+          <AddContactBtn type="submit" isPressed={isPressed}>
+            Add contact
+          </AddContactBtn>
+        </ContactName>
       </form>
     );
   }

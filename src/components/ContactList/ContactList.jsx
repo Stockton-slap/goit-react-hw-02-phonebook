@@ -2,27 +2,29 @@ import { Component } from 'react';
 
 import PropTypes from 'prop-types';
 
+import { List, Item, DeleteBtn } from './ContactList.styled';
+
 class ContactList extends Component {
   render() {
     const { visibleContacts, deleteContact } = this.props;
 
     return (
-      <ul>
+      <List>
         {visibleContacts.map(({ id, name, number }) => {
           return (
-            <li key={id}>
+            <Item key={id}>
               {name}: {number}
-              <button
+              <DeleteBtn
                 type="button"
                 name={name}
                 onClick={() => deleteContact(id)}
               >
                 Delete
-              </button>
-            </li>
+              </DeleteBtn>
+            </Item>
           );
         })}
-      </ul>
+      </List>
     );
   }
 }
