@@ -2,15 +2,28 @@ import { Component } from 'react';
 
 import PropTypes from 'prop-types';
 
-import ContactName from '../ContactName';
-
-import { AddContactBtn } from './ContactForm.styled';
+import {
+  AddContactBtn,
+  ContactInfo,
+  ContactInfoLabel,
+  ContactInfoValues,
+} from './ContactForm.styled';
 
 class ContactForm extends Component {
+  static propTypes = {
+    onSubmit: PropTypes.func.isRequired,
+    contacts: PropTypes.arrayOf(
+      PropTypes.shape({
+        id: PropTypes.string.isRequired,
+        name: PropTypes.string.isRequired,
+        number: PropTypes.string.isRequired,
+      })
+    ),
+  };
+
   state = {
     name: '',
     number: '',
-    isPressed: false,
   };
 
   handleSubmit = e => {
@@ -26,17 +39,14 @@ class ContactForm extends Component {
       alert(`${name} is already in contacts.`);
     } else {
       onSubmit(name, number);
+      this.reset();
     }
-
-    this.setState({ isPressed: true });
-
-    this.reset();
   };
 
   handleChange = e => {
     const { value, name } = e.target;
 
-    this.setState({ [name]: value, isPressed: false });
+    this.setState({ [name]: value });
   };
 
   reset = () => {
@@ -44,29 +54,44 @@ class ContactForm extends Component {
   };
 
   render() {
-    const { name, number, isPressed } = this.state;
+    const { name, number } = this.state;
 
     return (
       <form onSubmit={this.handleSubmit}>
-        <ContactName name={name} number={number} onChange={this.handleChange}>
-          <AddContactBtn type="submit" isPressed={isPressed}>
-            Add contact
-          </AddContactBtn>
-        </ContactName>
+        <ContactInfo>
+          <ContactInfoLabel>
+            Name
+            <br />
+            <ContactInfoValues
+              type="text"
+              name="name"
+              value={name}
+              pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
+              title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
+              required
+              onChange={this.handleChange}
+            />
+          </ContactInfoLabel>
+          <br />
+          <ContactInfoLabel>
+            Number
+            <br />
+            <ContactInfoValues
+              type="tel"
+              name="number"
+              value={number}
+              pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
+              title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
+              required
+              onChange={this.handleChange}
+            />
+          </ContactInfoLabel>
+          <br />
+          <AddContactBtn type="submit">Add contact</AddContactBtn>
+        </ContactInfo>
       </form>
     );
   }
 }
-
-ContactForm.propTypes = {
-  onSubmit: PropTypes.func.isRequired,
-  contacts: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.string.isRequired,
-      name: PropTypes.string.isRequired,
-      number: PropTypes.string.isRequired,
-    })
-  ),
-};
 
 export default ContactForm;

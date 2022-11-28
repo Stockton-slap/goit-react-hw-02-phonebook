@@ -1,33 +1,26 @@
-import { Component } from 'react';
-
 import PropTypes from 'prop-types';
 
-import { List, Item, DeleteBtn } from './ContactList.styled';
+import ContactListItem from 'components/ContactListItem';
 
-class ContactList extends Component {
-  render() {
-    const { visibleContacts, deleteContact } = this.props;
+import { List } from './ContactList.styled';
 
-    return (
-      <List>
-        {visibleContacts.map(({ id, name, number }) => {
-          return (
-            <Item key={id}>
-              {name}: {number}
-              <DeleteBtn
-                type="button"
-                name={name}
-                onClick={() => deleteContact(id)}
-              >
-                Delete
-              </DeleteBtn>
-            </Item>
-          );
-        })}
-      </List>
-    );
-  }
-}
+const ContactList = ({ visibleContacts, deleteContact }) => {
+  return (
+    <List>
+      {visibleContacts.map(({ id, name, number }) => {
+        return (
+          <ContactListItem
+            key={id}
+            id={id}
+            name={name}
+            number={number}
+            deleteContact={deleteContact}
+          />
+        );
+      })}
+    </List>
+  );
+};
 
 ContactList.propTypes = {
   visibleContacts: PropTypes.arrayOf(
